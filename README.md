@@ -54,3 +54,18 @@
 
 **Graph Results**
 ![Graph 3](images/img-testplan3/graph3.png)
+
+## 1. Test Plan 1: `/all-student`
+
+![testresult1-cmd.png](images/jmeter_command/testresult1-cmd.png)
+![testresult1-result.png](images/jmeter_command/testresult1-result.png)
+
+## 2. Test Plan 2: `/all-student-name`
+
+![testresult2-cmd.png](images/jmeter_command/testresult2-cmd.png)
+![testresult2-result.png](images/jmeter_command/testresult2-result.png)
+
+## 3. Test Plan 3: `/highest-gpa`
+
+![testresult3-cmd.png](images/jmeter_command/testresult3-cmd.png)
+![testresult3-result.png](images/jmeter_command/testresult3-result.png)
