@@ -38,8 +38,6 @@
 
 ## 3. Test Plan 3: `/highest-gpa`
 
-*(Catatan: Gambar di bawah ini memanggil folder `img-testplan3`. Sesuaikan nama file jika ada perbedaan)*
-
 **HTTP Request Configuration**
 ![Request 3](images/img-testplan3/request3.png)
 
@@ -96,15 +94,7 @@ Berdasarkan hasil analisis, saya menerapkan dua strategi utama:
 * **Menggunakan Struktur Data dan API yang Tepat:** Menghindari manipulasi `String` manual di dalam *loop*, dengan cara menggantinya menggunakan fitur deklaratif Java Streams dan `Collectors.joining()`.
   Untuk memastikan fungsionalitas aplikasi tidak terganggu, saya memastikan *return type* (tipe kembalian) dari *method* tetap sama. Langkah validasi krusial yang dilakukan adalah dengan menjalankan seluruh *Unit Test* dan *Integration Test* yang sudah ada, serta mengecek respons JSON via Postman/Browser untuk memastikan *output* data sebelum dan sesudah *refactoring* bernilai persis sama.
 
-Tentu, ini adalah penyesuaian yang sangat bagus! Menggunakan 5000 data (baris) mahasiswa membuat analisis performa ini menjadi jauh lebih relevan dan realistis. Masalah pada kode yang tidak efisien memang baru akan benar-benar terlihat ketika dihadapkan pada jumlah data yang besar.
-
-Berikut adalah draf revisi untuk **Conclusions/Explanations** yang sudah disesuaikan dengan konteks **5000 data/record mahasiswa** di dalam *database*:
-
-***
-
 ### JMeter Performance Testing: Before vs After Optimization Conclusions (5000 Data Records)
-
-Pengujian performa menggunakan Apache JMeter dilakukan dengan simulasi beban terhadap *database* yang telah diisi (*seeded*) dengan **5000 data mahasiswa**. Berikut adalah kesimpulan dari hasil optimasi pada ketiga *endpoint*:
 
 #### 1. Endpoint `/all-student` (Test Plan 1)
 * **Before Optimization:** Average Response Time = **14.982 ms** (~15 detik)
@@ -120,10 +110,6 @@ Pengujian performa menggunakan Apache JMeter dilakukan dengan simulasi beban ter
 * **Before Optimization:** Average Response Time = **97 ms**
 * **After Optimization:** Average Response Time = **96 ms**
 * **Penjelasan:** Walaupun selisih waktu di JMeter tidak terlihat masif secara *millisecond*, perbedaan efisiensi arsitekturnya sangat besar. Pada kode yang belum dioptimasi, pemanggilan `findAll()` memaksa aplikasi menarik seluruh **5000 baris data lengkap** (beserta relasinya) dari *database* ke dalam RAM (*heap memory*) aplikasi, lalu mengubahnya menjadi objek `List` di Java, hanya untuk di-*looping* demi mencari satu nilai IPK tertinggi. Dengan optimasi *query* `findFirstByOrderByGpaDesc()`, kita memindahkan beban pengurutan data (*sorting*) secara langsung ke mesin *database* yang memang dirancang untuk tugas tersebut. Aplikasi sekarang hanya menerima 1 objek data yang relevan, memastikan penggunaan memori tetap rendah dan mencegah aplikasi terkena *Out of Memory* saat menangani trafik tinggi.
-
-Berikut adalah draf untuk bagian **IntelliJ Profiler: Before vs After Optimization** yang bisa langsung kamu tambahkan ke dalam `README.md` di bawah bagian JMeter sebelumnya.
-
-Berbeda dengan JMeter yang melihat dari sisi respons HTTP (*black-box*), bagian ini menjelaskan optimasi dari sudut pandang internal aplikasi (*white-box*), yaitu bagaimana CPU dan memori JVM bekerja mengeksekusi baris kode.
 
 ### IntelliJ Profiler: Before vs After Optimization Conclusions
 
